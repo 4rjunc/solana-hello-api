@@ -23,7 +23,24 @@ const provider = new anchor.AnchorProvider(connection, wallet, {
 })
 
 
-const IDL = JSON.parse(fs.readFileSync("../target/idl/solana_hello_api.json", "utf-8"))
+//const IDL = JSON.parse(fs.readFileSync("../target/idl/solana_hello_api.json", "utf-8"))
+const IDL = {
+  "address": "9uVWMyg6PGuLwWUYtA3vY2ubt6JiY5gJRcbHhCW4cXVz",
+  "metadata": {
+    "name": "solana_hello_api",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "hello",
+      "discriminator": [149, 118, 59, 220, 196, 127, 161, 179],
+      "accounts": [],
+      "args": []
+    }
+  ]
+}
 const programID = new anchor.web3.PublicKey("9uVWMyg6PGuLwWUYtA3vY2ubt6JiY5gJRcbHhCW4cXVz")
 const program = new anchor.Program(IDL, programID, provider)
 
@@ -31,6 +48,7 @@ console.log(`wallet public key: ${wallet.publicKey.toString()}`);
 console.log(`connection commitment: ${connection.commitment}`);
 console.log(`program ID: ${programID.toString()}`);
 console.log(`IDL: ${JSON.stringify(IDL)}`);
+console.log(`Program: ${program}`);
 
 // to invoke home function
 fastify.post('/', async function handler(request, reply) {
@@ -42,9 +60,7 @@ fastify.post('/', async function handler(request, reply) {
     console.log(`Found ${programAccounts.length} program accounts`);
 
     // Try calling the method
-    const tx = await program.methods.hello()
-      .accounts({}) // Add required accounts if any
-      .rpc();
+    const tx = await program.methods.hello().rpc();
 
     console.log("Transaction hash:", tx);
     reply.code(200).send({ transactionHash: tx });
