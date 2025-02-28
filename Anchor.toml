@@ -11,7 +11,7 @@ solana_hello_api = "9uVWMyg6PGuLwWUYtA3vY2ubt6JiY5gJRcbHhCW4cXVz"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
